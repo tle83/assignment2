@@ -1,7 +1,5 @@
 ﻿  trackball.cpp
-c:\users\nevicity\documents\visual studio 2017\projects\assignment2\assignment2\trackball.cpp(123): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\nevicity\documents\visual studio 2017\projects\assignment2\assignment2\trackball.cpp(126): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\nevicity\documents\visual studio 2017\projects\assignment2\assignment2\trackball.cpp(127): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\nevicity\documents\visual studio 2017\projects\assignment2\assignment2\trackball.cpp(225): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  assignment2.vcxproj -> C:\Users\Nevicity\Documents\Visual Studio 2017\Projects\assignment2\Debug\assignment2.exe
-  assignment2.vcxproj -> C:\Users\Nevicity\Documents\Visual Studio 2017\Projects\assignment2\Debug\assignment2.pdb (Partial PDB)
+c:\users\nevicity\documents\visual studio 2017\projects\assignment2\assignment2\trackball.cpp(201): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\nevicity\documents\visual studio 2017\projects\assignment2\assignment2\trackball.cpp(206): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  assignment2.vcxproj -> C:\Users\Nevicity\documents\visual studio 2017\Projects\assignment2\Debug\assignment2.exe
+  assignment2.vcxproj -> C:\Users\Nevicity\documents\visual studio 2017\Projects\assignment2\Debug\assignment2.pdb (Partial PDB)
