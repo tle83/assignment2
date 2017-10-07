@@ -101,20 +101,21 @@ void Draw()
 															// Insert your own code here (Hint:Translation Rotation & Scaling)
 	glLoadIdentity();
 
+	//Translation
+	//x_trans and y_trans is redefined in onKeyPress funtion
+	glTranslatef(x_trans, y_trans, 0.0f);
+
 	//Rotation
 	//the obj is roated if the LMB is held down
 	if (trackballMove) {
 		glRotatef(angle, axis[0], axis[1], axis[2]);
 	}
 	
-
 	//Scaling
 	//zoom is redefined in mouseWheel function
 	glScalef(zoom, zoom, zoom);
-
-	//Translation
-	//x_trans and y_trans is redefined in onKeyPress funtion
-	glTranslatef(x_trans, y_trans, 0.0f);
+	
+	
 
 	if (obj_data != NULL)
 		obj_data->Draw();
@@ -224,28 +225,32 @@ void mouseMotion(int x, int y)
 {
 	// Insert your own code here (Hint: track the motion of mouse point)
 
-	float curPos[3], dx, dy, dz;
+	float curPos[3];
 	trackmapping(x, y, winWidth, winHeight, curPos);
 	if (trackingMouse) {
+		
 		//calculate the change in poition
-		dx = curPos[0] - lastPos[0];
-		dy = curPos[1] - lastPos[1];
-		dz = curPos[2] - lastPos[2];
-	
-		if (dx || dy || dz) {
+		trans[0] = curPos[0] - lastPos[0];
+		trans[1] = curPos[1] - lastPos[1];
+		trans[2] = curPos[2] - lastPos[2];
+		
+		if (trans[0] || trans[1] || trans[2]) {
 			//calculate theta
-			angle =  90.0f * sqrt(dx*dx + dy*dy + dz*dz);
+			angle =  90.0f * sqrt(trans[0] * trans[0] + trans[1] * trans[1] + trans[2] * trans[2]);
+			
 			//calculate the cross product
 			axis[0] = lastPos[1] * curPos[2] - lastPos[2] * curPos[1];
 			axis[1] = lastPos[2] * curPos[0] - lastPos[0] * curPos[2];
 			axis[2] = lastPos[0] * curPos[1] - lastPos[1] * curPos[0];
+			
 			//update the positions
-			lastPos[0] = curPos[0];
-			lastPos[1] = curPos[1];
-			lastPos[2] = curPos[2];
+			curPos[0] = lastPos[0];
+			curPos[1] = lastPos[1];
+			curPos[2] = lastPos[2];
+			printf("%f\t %f\t %f\t %f\n", angle, lastPos[0], curPos[0], axis[0]);
+
 		}
 	}
-	
 	glutPostRedisplay();
 }
 
