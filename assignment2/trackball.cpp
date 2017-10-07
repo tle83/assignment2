@@ -13,6 +13,8 @@ using namespace std;
 #include "objLoader.h"
 
 
+
+
 #define KEY_LEFT 100
 #define KEY_UP 101
 #define KEY_RIGHT 102
@@ -97,13 +99,22 @@ void Draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
 
 															// Insert your own code here (Hint:Translation Rotation & Scaling)
-	
+	glLoadIdentity();
+
 	//Rotation
+	//the obj is roated if the LMB is held down
 	if (trackballMove) {
 		glRotatef(angle, axis[0], axis[1], axis[2]);
 	}
+	
 
+	//Scaling
+	//zoom is redefined in mouseWheel function
+	glScalef(zoom, zoom, zoom);
 
+	//Translation
+	//x_trans and y_trans is redefined in onKeyPress funtion
+	glTranslatef(x_trans, y_trans, 0.0f);
 
 	if (obj_data != NULL)
 		obj_data->Draw();
@@ -116,6 +127,7 @@ void Draw()
 }
 
 void trackmapping(int x, int y, int width, int height, float v[3]) {
+	
 	float d, a;
 	v[0] = (2.0f * x - width) / width;
 	v[1] = (height - 2.0f * y) / height;
@@ -125,6 +137,7 @@ void trackmapping(int x, int y, int width, int height, float v[3]) {
 	v[0] *= a;
 	v[1] *= a;
 	v[2] *= a;
+	
 }
 
 
@@ -162,53 +175,47 @@ void onKeyPress(unsigned char key, int x, int y)
 
 	// Insert your own code here (Hint: Use keyboard to control translations)
 
-	if (key == 'a') {
+	if (key == 'z') {
 		//translate in negative x direction
+		x_trans -= 0.5f;
 	}
-	else if (key == 's') {
+	else if (key == 'x') {
 		//translate in negative y direction
+		y_trans += 0.5f;
 	}
-	else if (key == 'd') {
+	else if (key == 'c') {
 		//translfate in positive y direction
+		y_trans -= 0.5f;
 	}
-	else if (key == 'f') {
+	else if (key == 'v') {
 		//translfate in positive x direction
+		x_trans += 0.5f;
 	}
 
 	glutPostRedisplay();
 }
 
-
-/*void Specialkey(int key, int x, int y)
+/*
+void Specialkey(int key, int x, int y)
 {
-(Hint: Use this function if you would like to use up/down/left/right arrow (#define as KEY_UP/KEY_DOWN/KEY_LEFT/KEY_RIGHT) for controlling translation)
-
+	//(Hint: Use this function if you would like to use up/down/left/right arrow (#define as KEY_UP/KEY_DOWN/KEY_LEFT/KEY_RIGHT) for controlling translation)
+	
 glutPostRedisplay();
-}*/
-
-
-
+}
+*/
 
 void MouseWheel(int wheel, int direction, int x, int y)
 {
-	int curDir, newDir;
-	curDir = 0;
-	newDir = direction;
 	// Insert your own code here (Hint: set zoom in/out for scrolling mouse wheel)
-	if (newDir > curDir) {
+	if (direction < 0) {
 		// Zoom in
-		glScalef(zoom, zoom, zoom);
-		newDir = curDir + 1.0f;
-		zoom+=0.5f;
+		zoom -= 0.05f;
 	}
-	else if(newDir < curDir){
+	else if (direction > 0) {
 		// Zoom out
-		newDir = curDir - 1.0f;
-		glScalef(zoom, zoom, zoom);
-		zoom -= 0.5f;
+		zoom += 0.05f;
 	}
 	glutPostRedisplay();
-
 }
 
 
@@ -216,6 +223,7 @@ void MouseWheel(int wheel, int direction, int x, int y)
 void mouseMotion(int x, int y)
 {
 	// Insert your own code here (Hint: track the motion of mouse point)
+
 	float curPos[3], dx, dy, dz;
 	trackmapping(x, y, winWidth, winHeight, curPos);
 	if (trackingMouse) {
@@ -226,18 +234,18 @@ void mouseMotion(int x, int y)
 	
 		if (dx || dy || dz) {
 			//calculate theta
-			angle =  90.0f *  sqrt(dx*dx + dy*dy + dz*dz);
+			angle =  90.0f * sqrt(dx*dx + dy*dy + dz*dz);
 			//calculate the cross product
 			axis[0] = lastPos[1] * curPos[2] - lastPos[2] * curPos[1];
 			axis[1] = lastPos[2] * curPos[0] - lastPos[0] * curPos[2];
-			axis[1] = lastPos[0] * curPos[1] - lastPos[1] * curPos[0];
+			axis[2] = lastPos[0] * curPos[1] - lastPos[1] * curPos[0];
 			//update the positions
 			lastPos[0] = curPos[0];
 			lastPos[1] = curPos[1];
 			lastPos[2] = curPos[2];
 		}
 	}
-
+	
 	glutPostRedisplay();
 }
 
@@ -270,6 +278,7 @@ void stopMotion(int x, int y) {
 void mouseButton(int button, int state, int x, int y)
 {
 	// Insert your own code here (Hint:click down the left button to allow rotation)
+	
 	if ((button == GLUT_LEFT_BUTTON)) {
 		switch (state) {
 		case GLUT_DOWN:
@@ -281,6 +290,7 @@ void mouseButton(int button, int state, int x, int y)
 			break;
 		}
 	}
+	
 }
 
 
